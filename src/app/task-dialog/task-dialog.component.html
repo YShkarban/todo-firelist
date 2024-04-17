@@ -1,0 +1,65 @@
+@if(data.enableDelete){
+<h2 mat-dialog-title>Delete task</h2>
+<mat-dialog-content style="padding-top: 5px; padding-bottom: 0px">
+  Would you like to delete task ?
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button
+    mat-flat-button
+    mat-dialog-close
+    cdkFocusInitial
+    [mat-dialog-close]="{ task: data.task, delete: true }"
+    color="primary"
+  >
+    Yes
+  </button>
+  <button mat-stroked-button mat-dialog-close>Cancel</button>
+</mat-dialog-actions>
+} @else if (data.toEdit) {
+<h2 mat-dialog-title>Edit task</h2>
+<mat-dialog-content style="padding-top: 5px; padding-bottom: 0px">
+  <mat-form-field appearance="outline" style="width: 100%">
+    <mat-label>Title</mat-label>
+    <input matInput cdkFocusInitial [(ngModel)]="data.task.taskInfo.title" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" style="width: 100%">
+    <mat-label>Description</mat-label>
+    <textarea matInput [(ngModel)]="data.task.taskInfo.description"></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button
+    mat-flat-button
+    color="primary"
+    [mat-dialog-close]="{ task: data.task }"
+  >
+    Save
+  </button>
+  <button mat-stroked-button (click)="cancel()">Cancel</button>
+</mat-dialog-actions>
+} @else {
+<h2 mat-dialog-title>New Task</h2>
+<mat-dialog-content style="padding-top: 5px; padding-bottom: 0px">
+  <mat-form-field appearance="outline" style="width: 100%">
+    <mat-label>Title</mat-label>
+    <input matInput cdkFocusInitial [(ngModel)]="data.task.taskInfo.title" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" style="width: 100%">
+    <mat-label>Description</mat-label>
+    <textarea matInput [(ngModel)]="data.task.taskInfo.description"></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button
+    mat-flat-button
+    color="primary"
+    [mat-dialog-close]="{ task: data.task }"
+  >
+    Add
+  </button>
+  <button mat-stroked-button (click)="cancel()">Cancel</button>
+</mat-dialog-actions>
+
+}

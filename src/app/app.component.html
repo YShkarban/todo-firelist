@@ -1,0 +1,113 @@
+<mat-toolbar color="primary" style="height: auto">
+  <div>
+    <mat-icon>local_fire_department</mat-icon>
+    <span>Task FireList</span>
+  </div>
+
+  <div class="">
+    <button
+      mat-raised-button
+      (click)="newTask()"
+      style="margin-right: 10px; margin-left: 20px"
+    >
+      Add Task
+    </button>
+    <mat-form-field class="mt-2">
+      <mat-label>Date</mat-label>
+      <input
+        matInput
+        [matDatepicker]="dp"
+        [(ngModel)]="actualDate"
+        formatJson
+        (dateChange)="setMonthAndYear($event, dp)"
+      />
+      <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+      <mat-datepicker
+        #dp
+        startView="month"
+      >
+      </mat-datepicker>
+    </mat-form-field>
+  </div>
+</mat-toolbar>
+
+<div class="content-wrapper">
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="container col">
+        <h2>Tasks</h2>
+
+        <mat-card
+          cdkDropList
+          id="todo"
+          #todoList="cdkDropList"
+          [cdkDropListData]="todo | async"
+          [cdkDropListConnectedTo]="[doneList, inProgressList]"
+          (cdkDropListDropped)="drop($event)"
+          class="list"
+        >
+          @if ((todo | async)?.length === 0){
+          <p class="empty-label">Empty list</p>
+          } @for (task of todo| async; track $index) {
+          <app-task
+            (edit)="editTask('todo', $event)"
+            cdkDrag
+            [task]="task"
+            (delete)="deleteTask('todo', $event)"
+          ></app-task
+          >}
+        </mat-card>
+      </div>
+
+      <div class="container col">
+        <h2>In progress</h2>
+
+        <mat-card
+          cdkDropList
+          id="inProgress"
+          #inProgressList="cdkDropList"
+          [cdkDropListData]="inProgress | async"
+          [cdkDropListConnectedTo]="[todoList, doneList]"
+          (cdkDropListDropped)="drop($event)"
+          class="list"
+        >
+          @if ((inProgress | async)?.length === 0){
+          <p class="empty-label">Empty list</p>
+          } @for (task of inProgress | async; track $index) {
+          <app-task
+            (edit)="editTask('inProgress', $event)"
+            cdkDrag
+            [task]="task"
+            (delete)="deleteTask('inProgress', $event)"
+          ></app-task>
+          }
+        </mat-card>
+      </div>
+
+      <div class="container col">
+        <h2>Done</h2>
+
+        <mat-card
+          cdkDropList
+          id="done"
+          #doneList="cdkDropList"
+          [cdkDropListData]="done | async"
+          [cdkDropListConnectedTo]="[todoList, inProgressList]"
+          (cdkDropListDropped)="drop($event)"
+          class="list"
+        >
+          @if ((done | async)?.length === 0){
+          <p class="empty-label">Empty list</p>
+          } @for (task of done | async; track $index) {
+          <app-task
+            (edit)="editTask('done', $event)"
+            cdkDrag
+            [task]="task"
+            (delete)="deleteTask('done', $event)"
+          ></app-task
+          >}
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>
